@@ -32,8 +32,6 @@ namespace CodeCraft.Logger
         protected void EnqueueLog(string log, ILevelLogFormatter levelLogger)
             => logProducerConsumer.Enqueue(levelLogger.FormatLog(log));
 
-        protected abstract void WriteLog(string log);
-
         public void Trace(string log) => EnqueueLog(log, TraceLogFormatter);
         public void Info(string log) => EnqueueLog(log, InfoLogFormatter);
         public void Debug(string log) => EnqueueLog(log, DebugLogFormatter);

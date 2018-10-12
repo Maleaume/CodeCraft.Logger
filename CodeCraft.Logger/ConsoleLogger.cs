@@ -5,6 +5,5 @@ namespace CodeCraft.Logger
 { 
     public class ConsoleLogger : BaseLogger<ConsoleLogProducerConsumer>
     {
-        protected override void WriteLog(string log) => Console.WriteLine(log);
     }
 }

@@ -1,5 +1,4 @@
-﻿using System;
-using CodeCraft.Logger.ProducerConsumer;
+﻿using CodeCraft.Logger.ProducerConsumer;
 
 namespace CodeCraft.Logger
 { 

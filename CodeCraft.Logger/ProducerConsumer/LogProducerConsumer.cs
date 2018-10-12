@@ -59,5 +59,4 @@ namespace CodeCraft.Logger.ProducerConsumer
             while (LoggingThread.IsAlive) ;
         }
     }
-
 }

@@ -11,18 +11,18 @@ namespace CodeCraft.Logger.NetFramework.UnitTests
         [TestMethod]
         public void TestMethod1()
         {
-     
-            var t1 = new Thread(new ThreadStart(TraceLogs)); 
+
+            var t1 = new Thread(new ThreadStart(TraceLogs));
             var t2 = new Thread(new ThreadStart(InfoLogs));
             var t3 = new Thread(new ThreadStart(DebugLogs));
-             
-                t1.Start();
-           t2.Start();
+
+            t1.Start();
+            t2.Start();
             t3.Start();
-            t1.Join(); 
+            t1.Join();
             t3.Join();
             t2.Join();
-        
+
             ConsoleLogger.Dispose();
         }
         delegate void LogLevel(string log);
@@ -31,7 +31,7 @@ namespace CodeCraft.Logger.NetFramework.UnitTests
         private void InfoLogs() => Logs(ConsoleLogger.Info);
         private void DebugLogs() => Logs(ConsoleLogger.Debug);
 
-        private void Logs(LogLevel Log )
+        private void Logs(LogLevel Log)
         {
             for (int i = 0; i < 800; i++)
                 Log(i.ToString());
@@ -40,7 +40,7 @@ namespace CodeCraft.Logger.NetFramework.UnitTests
                 Log(i.ToString());
         }
 
-       
-       
+
+
     }
 }

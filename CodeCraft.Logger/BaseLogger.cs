@@ -1,20 +1,13 @@
 ﻿using System;
-using System.Collections.Concurrent;
-using System.Threading;
-using CodeCraft.Logger.LogFormatter;
+using CodeCraft.Logger.Formatter;
+using CodeCraft.Logger.ProducerConsumer;
 
 namespace CodeCraft.Logger
 {
-
-
-    public abstract class BaseLogger :ILogger,  IDisposable
+    public abstract class BaseLogger<T> : ILogger, IDisposable
+         where T : ILogProducerConsumer, new()
     {
-        readonly WaitHandle[] WaitHandleEvent;
-        readonly Thread LoggingThread;
-
-        protected ManualResetEvent hasNewItems = new ManualResetEvent(false);
-        protected ManualResetEvent terminate = new ManualResetEvent(false);
-        protected ManualResetEvent waiting = new ManualResetEvent(false);
+        private readonly T logProducerConsumer = new T();
 
         #region Lazy Objects
         private readonly Lazy<ILevelLogFormatter> traceLogger = new Lazy<ILevelLogFormatter>(() => InstanciateLevelLoger(ElogLevel.Trace), true);
@@ -36,45 +29,8 @@ namespace CodeCraft.Logger
         private static ILevelLogFormatter InstanciateLevelLoger(ElogLevel logLevel)
             => LevelLogFormatterFactory.Instance.Instanciate(logLevel);
 
-        private ConcurrentQueue<string> LogsQueue = new ConcurrentQueue<string>();
-
-        protected BaseLogger()
-        {
-            WaitHandleEvent = new WaitHandle[] { hasNewItems, terminate };
-            LoggingThread = new Thread(new ThreadStart(ProcessQueue))
-            {
-                IsBackground = true,
-                Name = "LoggerThread"
-            };
-            LoggingThread.Start();
-        }
-
-        private void ProcessQueue()
-        {
-            int i = -1;
-            while (true)
-            {
-                waiting.Set();
-                i = WaitHandle.WaitAny(WaitHandleEvent, -1);
-                hasNewItems.Reset();
-                waiting.Reset();
-                DeQueue();
-                if (i == 1)
-                    return;
-            }
-        }
-
-        private void DeQueue()
-        {
-            while (LogsQueue.TryDequeue(out string log))
-                WriteLog(log);
-        }
-
         protected void EnqueueLog(string log, ILevelLogFormatter levelLogger)
-        {
-            LogsQueue.Enqueue(levelLogger.FormatLog(log));
-            hasNewItems.Set();
-        }
+            => logProducerConsumer.Enqueue(levelLogger.FormatLog(log));
 
         protected abstract void WriteLog(string log);
 
@@ -85,11 +41,6 @@ namespace CodeCraft.Logger
         public void Error(string log) => EnqueueLog(log, ErrorLogger);
         public void Critical(string log) => EnqueueLog(log, CriticalLogger);
 
-        public virtual void Dispose()
-        {
-            terminate.Set();
-            while (LoggingThread.IsAlive) ; 
-        }
+        public void Dispose() => logProducerConsumer.Dispose();
     }
-
 }

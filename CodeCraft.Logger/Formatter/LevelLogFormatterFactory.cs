@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace CodeCraft.Logger.LogFormatter
+namespace CodeCraft.Logger.Formatter
 {
     public class LevelLogFormatterFactory
     {
@@ -22,5 +22,4 @@ namespace CodeCraft.Logger.LogFormatter
             }
         }
     }
-
 }

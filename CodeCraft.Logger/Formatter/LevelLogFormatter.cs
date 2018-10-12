@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace CodeCraft.Logger.LogFormatter
+namespace CodeCraft.Logger.Formatter
 {
     abstract class LevelLogFormatter : ILevelLogFormatter
     {
@@ -8,5 +8,4 @@ namespace CodeCraft.Logger.LogFormatter
 
         public string FormatLog(string log) => $"[{DateTime.Now}][{LogLevel}]: {log}";
     }
-
 }

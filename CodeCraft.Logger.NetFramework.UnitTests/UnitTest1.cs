@@ -11,7 +11,6 @@ namespace CodeCraft.Logger.NetFramework.UnitTests
         [TestMethod]
         public void TestMethod1()
         {
-
             var t1 = new Thread(new ThreadStart(TraceLogs));
             var t2 = new Thread(new ThreadStart(InfoLogs));
             var t3 = new Thread(new ThreadStart(DebugLogs));

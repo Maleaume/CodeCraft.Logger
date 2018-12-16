@@ -1,10 +1,8 @@
-﻿using System;
-
-namespace CodeCraft.Logger.ProducerConsumer
+﻿namespace CodeCraft.Logger.ProducerConsumer
 {
-    public interface ILogProducerConsumer : IDisposable
+    public interface ILogProducerConsumer : IProducerConsumer<string>
     {
-        void Enqueue(string log);
+
     }
 
 }

@@ -7,7 +7,7 @@ namespace CodeCraft.Logger
     public abstract class BaseLogger<T> : ILogger, IDisposable
          where T : ILogProducerConsumer, new()
     {
-        private readonly T logProducerConsumer = new T();
+        protected readonly T logProducerConsumer = new T();
 
         #region Lazy Objects
         private readonly Lazy<ILevelLogFormatter> traceLogFormatter = new Lazy<ILevelLogFormatter>(() => InstanciateLevelLoger(ElogLevel.Trace), true);

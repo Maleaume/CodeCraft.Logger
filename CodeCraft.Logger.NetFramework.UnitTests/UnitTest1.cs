@@ -12,7 +12,7 @@ namespace CodeCraft.Logger.NetFramework.UnitTests
         public void ConsoleLoggerTest2()
         {
 
-            var t1 = new Thread(new ThreadStart(TraceEvery300msLogs));
+            var t1 = new Thread(new ThreadStart(TraceLogs));
           
             t1.Start();
           

@@ -1,15 +1,13 @@
-﻿using System;
-using System.Diagnostics;
-using System.IO;
-using System.Threading;
+﻿using System; 
+using System.IO; 
 
 namespace CodeCraft.Logger.ProducerConsumer
 {
     public sealed class ConsoleLogProducerConsumer : LogProducerConsumer
     {
-        public ConsoleLogProducerConsumer() => StartProcessThread();
+        public ConsoleLogProducerConsumer() => StartConsumerTask();
 
-        protected override void WriteLog(string log) {  Debug.WriteLine(log); }
+        protected override void WriteLog(string log) {  Console.WriteLine(log); }
     }
 
     public delegate void FilePathCompletedEventHandler(object sender, FilePathEventArgs e);
@@ -94,7 +92,7 @@ namespace CodeCraft.Logger.ProducerConsumer
         }
         void FilePathSettingsEnd()
         {
-            StartProcessThread();
+            StartConsumerTask();
             InitializeMode = false;
         }
         public override void Dispose()

@@ -30,7 +30,7 @@ namespace CodeCraft.Logger
             => LevelLogFormatterFactory.Instance.Instanciate(logLevel);
 
         protected void EnqueueLog(string log, ILevelLogFormatter levelLogger)
-            => logProducerConsumer.Enqueue(levelLogger.FormatLog(log));
+            => logProducerConsumer.Produce(levelLogger.FormatLog(log));
 
         public void Trace(string log) => EnqueueLog(log, TraceLogFormatter);
         public void Info(string log) => EnqueueLog(log, InfoLogFormatter);

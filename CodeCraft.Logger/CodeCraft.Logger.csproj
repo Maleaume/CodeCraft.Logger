@@ -5,10 +5,10 @@
     <AssemblyName />
     <LangVersion>7.3</LangVersion>
     <Authors>Maleaume BONNIN</Authors>
-    <Version>0.2.0-alpha</Version>
+    <Version>0.2.1-alpha</Version>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <AssemblyVersion>0.2.0.0</AssemblyVersion>
-    <FileVersion>0.2.0.0</FileVersion>
+    <AssemblyVersion>0.2.1.0</AssemblyVersion>
+    <FileVersion>0.2.1.0</FileVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

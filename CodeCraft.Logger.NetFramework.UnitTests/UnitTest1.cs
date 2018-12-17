@@ -1,5 +1,7 @@
 ﻿using System.Diagnostics;
 using System.Threading;
+using System.Threading.Tasks;
+using CodeCraft.Logger.ProducerConsumer;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace CodeCraft.Logger.NetFramework.UnitTests
@@ -12,26 +14,27 @@ namespace CodeCraft.Logger.NetFramework.UnitTests
         public void ConsoleLoggerTest2()
         {
 
-            var t1 = new Thread(new ThreadStart(TraceLogs));
+            var t1 = new Task(() =>TraceEvery300msLogs());
           
             t1.Start();
+             
+            t1.Wait();
           
-           
-            t1.Join();
-         
-
-            ConsoleLogger.Dispose();
+        //  ConsoleLogger.Dispose();
 
         }
         private void TraceEvery300msLogs() => TraceEvery300msLogs(ConsoleLogger.Trace);
         private void TraceEvery300msLogs(LogLevel log)
         {
-            for (int i = 0; i < 20; i++)
+            for (int i = 0; i <3 ; i++)
             {
                 log(i.ToString());
                 Thread.Sleep(300);
             }
         }
+
+
+
 
         [TestMethod]
         public void ConsoleLoggerTest()
@@ -47,7 +50,7 @@ namespace CodeCraft.Logger.NetFramework.UnitTests
             t3.Join();
             t2.Join();
 
-            ConsoleLogger.Dispose();
+         // ConsoleLogger.Dispose();
         }
         delegate void LogLevel(string log);
 
@@ -89,7 +92,6 @@ namespace CodeCraft.Logger.NetFramework.UnitTests
                 for (int i = 0; i < 2200; i++)
                     fileLogger.Warn($"{i}");    
             }
-            
         }
     }
 }

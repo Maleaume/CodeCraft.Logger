@@ -30,15 +30,15 @@ namespace CodeCraft.Logger
         private static ILevelLogFormatter InstanciateLevelLoger(ElogLevel logLevel)
             => LevelLogFormatterFactory.Instance.Instanciate(logLevel);
 
-        protected void EnqueueLog(string log, ILevelLogFormatter levelLogger)
+        protected void Produce(string log, ILevelLogFormatter levelLogger)
             => logProducerConsumer.Produce(levelLogger.FormatLog(log));
 
-        public void Trace(string log) => EnqueueLog(log, TraceLogFormatter);
-        public void Info(string log) => EnqueueLog(log, InfoLogFormatter);
-        public void Debug(string log) => EnqueueLog(log, DebugLogFormatter);
-        public void Warn(string log) => EnqueueLog(log, WarningLogFormatter);
-        public void Error(string log) => EnqueueLog(log, ErrorLogFormatter);
-        public void Critical(string log) => EnqueueLog(log, CriticalLogFormatter);
+        public void Trace(string log) => Produce(log, TraceLogFormatter);
+        public void Info(string log) => Produce(log, InfoLogFormatter);
+        public void Debug(string log) => Produce(log, DebugLogFormatter);
+        public void Warn(string log) => Produce(log, WarningLogFormatter);
+        public void Error(string log) => Produce(log, ErrorLogFormatter);
+        public void Critical(string log) => Produce(log, CriticalLogFormatter);
 
         protected virtual void Dispose(bool disposing)
         {

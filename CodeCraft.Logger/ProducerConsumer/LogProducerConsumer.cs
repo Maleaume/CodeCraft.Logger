@@ -4,7 +4,7 @@
     public abstract class LogProducerConsumer : ProducerConsumer<string>, ILogProducerConsumer
     {
    
-        public LogProducerConsumer()
+        protected LogProducerConsumer()
             :base("LoggerThread")
         {
         }

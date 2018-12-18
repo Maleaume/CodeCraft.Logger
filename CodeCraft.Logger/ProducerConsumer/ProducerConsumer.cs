@@ -12,15 +12,15 @@ namespace CodeCraft.Logger.ProducerConsumer
     /// <typeparam name="T">Type of data to produce and consume.</typeparam>
     public abstract class ProducerConsumer<T> : IProducerConsumer<T>
     {
-        private bool disposed = false;
+        protected bool disposed = false;
         /// <summary>
         /// Task for consumer.
         /// </summary>
-        private readonly Task ConsumerTask;
+        protected readonly Task ConsumerTask;
         /// <summary>
         /// Data storage.
         /// </summary>
-        private readonly BlockingCollection<T> DataQueue = new BlockingCollection<T>();
+        protected readonly BlockingCollection<T> DataQueue = new BlockingCollection<T>();
 
         /// <summary>
         ///  Initializes a new instance of the CodeCraft.Logger.ProducerConsumer
@@ -30,25 +30,31 @@ namespace CodeCraft.Logger.ProducerConsumer
         {
             cancelToken = tokenSource.Token;
             ConsumerTask = InitializeConsumerTask();
+
         }
 
         /// <summary>
         /// Initialize consumer Task.
         /// </summary>
         /// <returns>New task that contains consumer processing.</returns>
-        private Task InitializeConsumerTask() => new Task(() => Consume(), cancelToken, TaskCreationOptions.RunContinuationsAsynchronously);
+        private Task InitializeConsumerTask() => new Task(() => Consume(), cancelToken, TaskCreationOptions.HideScheduler);
 
         /// <summary>
         /// Start consumer task.
         /// </summary>
-        protected void StartConsumerTask() => ConsumerTask.Start();
+        public void StartConsumerTask() => ConsumerTask.Start();
+        public void WaitConsumer() => ConsumerTask.Wait();
 
+        public void CompleteAdding() => DataQueue.CompleteAdding();
         /// <summary>
         /// Produce (Add) new data.
         /// </summary>
         /// <param name="data">Data to add</param>
-        public void Produce(T data) => DataQueue.Add(data);
-
+        public void Produce(T data)
+        {
+            DataQueue.Add(data);
+            // Debug.WriteLine("Added :" + data.ToString());
+        }
         /// <summary>
         /// <see langword="abstract"/> method that contains process to apply on data.
         /// </summary>
@@ -73,44 +79,34 @@ namespace CodeCraft.Logger.ProducerConsumer
                     // In this example, we can simply catch the exception since the 
                     // loop will break on the next iteration. 
                     ConsumeData();
-                    if (tokenSource.IsCancellationRequested)
+                    //if (tokenSource.IsCancellationRequested)
                     {
-                        ConsumeEnumarable();
-                        break;
+                        // Debug.WriteLine("Cancel");
+                        // ConsumeEnumarable();
+                        // break;
                     }
 
                 }
 
             }
-            catch (ProducerConsumerException)
+            catch (ProducerConsumerException ex)
             {
                 ConsumeEnumarable();
             }
 
-  
+
             void ConsumeData()
             {
-                var data = default(T);
-                try
-                {
-                    data = DataQueue.Take(cancelToken);
-                    Process(data);
-                }
-                catch (Exception ex) { 
-                    if (ex is ThreadAbortException || ex is OperationCanceledException)
-                    {
-                        Process(Data);
-                        throw new ProducerConsumerException("Operation was canceled", ex);
-                    }
-                    throw;
-                }
+                foreach (var l in DataQueue.GetConsumingEnumerable()) Process(l);
             }
 
 
             void ConsumeEnumarable()
             {
                 while (DataQueue.TryTake(out var data))
+                {
                     Process(data);
+                }
             }
         }
 
@@ -118,27 +114,29 @@ namespace CodeCraft.Logger.ProducerConsumer
         ///  Releases resources used by the CodeCraft.Logger.ProducerConsumer
         //     instance.
         /// </summary>
-        public virtual void Dispose()
+        public  void Dispose()
         {
+            if (disposed) return;
             DataQueue.CompleteAdding();
-            tokenSource.Cancel();
+            // ConsumerTask.Wait();
+            // DataQueue.CompleteAdding();
+            // tokenSource.Cancel();
+
+            //
 
             while (!(ConsumerTask.IsCompleted || ConsumerTask.IsCanceled)) ;
+
+
             // tokenSource.Cancel();
+        
             Dispose(true);
             GC.SuppressFinalize(this);
-
         }
 
         protected virtual void Dispose(bool disposing)
         {
-            if (disposed)
-                return;
-
-            if (disposing)
-            {
-                DataQueue.Dispose();
-            }
+            if (disposed) return;
+            DataQueue.Dispose();
             disposed = true;
         }
 
@@ -147,4 +145,5 @@ namespace CodeCraft.Logger.ProducerConsumer
         /// </summary>
         ~ProducerConsumer() => Dispose(false);
     }
+
 }

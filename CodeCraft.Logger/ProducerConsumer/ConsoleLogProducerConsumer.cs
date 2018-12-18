@@ -77,7 +77,6 @@ namespace CodeCraft.Logger.ProducerConsumer
             try
             { 
                 StreamWriter = FileManager.CreateOrOpenFile(fileLogPath);
-                
             }
             catch (Exception ex)
             {
@@ -96,18 +95,27 @@ namespace CodeCraft.Logger.ProducerConsumer
             StartConsumerTask();
             InitializeMode = false;
         }
-        public override void Dispose()
+ 
+
+        protected override void Dispose(bool disposing)
         {
             InitializeAsyncResult.AsyncWaitHandle.WaitOne();
             while (InitializeMode) ;
-            base.Dispose(); 
+            if (disposed) return;
             StreamWriter?.Dispose();
+            disposed = true;
+            base.Dispose(disposing);
         }
-
 
         protected override void WriteLog(string log)
         {
-            FileManager.WriteText(StreamWriter, $"{log} \r\n");
+            try
+            {
+                FileManager.WriteText(StreamWriter, $"{log} \r\n");
+               
+            }
+            catch (Exception ex)
+            { }
         }
     }
 }

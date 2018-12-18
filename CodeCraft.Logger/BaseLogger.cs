@@ -7,6 +7,7 @@ namespace CodeCraft.Logger
     public abstract class BaseLogger<T> : ILogger, IDisposable
          where T : ILogProducerConsumer, new()
     {
+        private bool disposed = false;
         protected readonly T logProducerConsumer = new T();
 
         #region Lazy Objects
@@ -39,6 +40,25 @@ namespace CodeCraft.Logger
         public void Error(string log) => EnqueueLog(log, ErrorLogFormatter);
         public void Critical(string log) => EnqueueLog(log, CriticalLogFormatter);
 
-        public void Dispose() => logProducerConsumer.Dispose();
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposed)
+            {
+                // Dispose of resources held by this instance.
+                logProducerConsumer.Dispose();
+                disposed = true; 
+
+            }
+        }
+        // Dispose of resources held by this instance.
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+
+            // Disposable types implement a finalizer.
+            ~BaseLogger() => Dispose(false);
     }
 }

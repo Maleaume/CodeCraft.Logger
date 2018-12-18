@@ -4,7 +4,7 @@ namespace CodeCraft.Logger.ProducerConsumer
 {
     public interface IProducerConsumer<T> : IDisposable
     {
-        void Produce(T datas);
+        void Produce(T datas); 
     }
 
 }

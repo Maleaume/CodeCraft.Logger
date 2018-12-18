@@ -114,7 +114,7 @@ namespace CodeCraft.Logger.ProducerConsumer
         ///  Releases resources used by the CodeCraft.Logger.ProducerConsumer
         //     instance.
         /// </summary>
-        public  void Dispose()
+        public void Dispose()
         {
             if (disposed) return;
             DataQueue.CompleteAdding();
@@ -128,7 +128,7 @@ namespace CodeCraft.Logger.ProducerConsumer
 
 
             // tokenSource.Cancel();
-        
+
             Dispose(true);
             GC.SuppressFinalize(this);
         }
@@ -136,7 +136,8 @@ namespace CodeCraft.Logger.ProducerConsumer
         protected virtual void Dispose(bool disposing)
         {
             if (disposed) return;
-            DataQueue.Dispose();
+            if (disposing)
+                DataQueue.Dispose();
             disposed = true;
         }
 

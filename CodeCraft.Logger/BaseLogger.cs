@@ -42,13 +42,11 @@ namespace CodeCraft.Logger
 
         protected virtual void Dispose(bool disposing)
         {
-            if (!disposed)
-            {
-                // Dispose of resources held by this instance.
+            if (disposed) return;
+            // Dispose of resources held by this instance.
+            if (disposing)
                 logProducerConsumer.Dispose();
-                disposed = true; 
-
-            }
+            disposed = true;
         }
         // Dispose of resources held by this instance.
         public void Dispose()
@@ -57,8 +55,7 @@ namespace CodeCraft.Logger
             GC.SuppressFinalize(this);
         }
 
-
-            // Disposable types implement a finalizer.
-            ~BaseLogger() => Dispose(false);
+        // Disposable types implement a finalizer.
+        ~BaseLogger() => Dispose(false);
     }
 }

@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
-using System.IO; 
+using System.IO;
 
 namespace CodeCraft.Logger.ProducerConsumer
 {
@@ -8,7 +8,7 @@ namespace CodeCraft.Logger.ProducerConsumer
     {
         public ConsoleLogProducerConsumer() => StartConsumerTask();
 
-        protected override void WriteLog(string log) {  Debug.WriteLine(log); }
+        protected override void WriteLog(string log) { Debug.WriteLine(log); }
     }
 
     public delegate void FilePathCompletedEventHandler(object sender, FilePathEventArgs e);
@@ -38,9 +38,9 @@ namespace CodeCraft.Logger.ProducerConsumer
             }
         }
 
-        public static  void WriteText (StreamWriter stream, string text)
+        public static void WriteText(StreamWriter stream, string text)
         {
-             stream.Write(text);
+            stream.Write(text);
 
         }
     }
@@ -75,7 +75,7 @@ namespace CodeCraft.Logger.ProducerConsumer
         private void FileLogProducerConsumer_FilePathEvent(object sender, FilePathEventArgs e)
         {
             try
-            { 
+            {
                 StreamWriter = FileManager.CreateOrOpenFile(fileLogPath);
             }
             catch (Exception ex)
@@ -87,25 +87,28 @@ namespace CodeCraft.Logger.ProducerConsumer
         {
             InitializeMode = true;
             var args = new FilePathEventArgs(fileLogPath);
-           InitializeAsyncResult = FilePathEvent.BeginInvoke(this, args, (result) => FilePathSettingsEnd(), null);
-         
+            InitializeAsyncResult = FilePathEvent.BeginInvoke(this, args, (result) => FilePathSettingsEnd(), null);
+
         }
         void FilePathSettingsEnd()
         {
             StartConsumerTask();
             InitializeMode = false;
         }
- 
-
+        
         protected override void Dispose(bool disposing)
         {
             InitializeAsyncResult.AsyncWaitHandle.WaitOne();
             while (InitializeMode) ;
+
             if (disposed) return;
-            if(disposing)
-                StreamWriter?.Dispose();
-            disposed = true;
             base.Dispose(disposing);
+            if (disposing)
+            {
+                StreamWriter?.Dispose();
+            }
+            disposed = true;
+
         }
 
         protected override void WriteLog(string log)
@@ -113,7 +116,7 @@ namespace CodeCraft.Logger.ProducerConsumer
             try
             {
                 FileManager.WriteText(StreamWriter, $"{log} \r\n");
-               
+
             }
             catch (Exception ex)
             { }

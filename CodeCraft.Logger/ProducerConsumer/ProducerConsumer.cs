@@ -117,14 +117,13 @@ namespace CodeCraft.Logger.ProducerConsumer
         public void Dispose()
         {
             if (disposed) return;
-            DataQueue.CompleteAdding();
+
             // ConsumerTask.Wait();
             // DataQueue.CompleteAdding();
             // tokenSource.Cancel();
 
             //
-
-            while (!(ConsumerTask.IsCompleted || ConsumerTask.IsCanceled)) ;
+           
 
 
             // tokenSource.Cancel();
@@ -136,10 +135,18 @@ namespace CodeCraft.Logger.ProducerConsumer
         protected virtual void Dispose(bool disposing)
         {
             if (disposed) return;
+            WaitConsumerEnded();
+
             if (disposing)
                 DataQueue.Dispose();
             disposed = true;
         }
+        protected virtual void  WaitConsumerEnded()
+        {
+            DataQueue.CompleteAdding();
+            while (!(ConsumerTask.IsCompleted || ConsumerTask.IsCanceled)) ;
+        }
+
 
         /// <summary>
         /// Destructor to substitute Object.Finalize.

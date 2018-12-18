@@ -102,7 +102,8 @@ namespace CodeCraft.Logger.ProducerConsumer
             InitializeAsyncResult.AsyncWaitHandle.WaitOne();
             while (InitializeMode) ;
             if (disposed) return;
-            StreamWriter?.Dispose();
+            if(disposing)
+                StreamWriter?.Dispose();
             disposed = true;
             base.Dispose(disposing);
         }

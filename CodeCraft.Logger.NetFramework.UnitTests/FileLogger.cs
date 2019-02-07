@@ -12,7 +12,7 @@ namespace CodeCraft.Logger.NetFramework.UnitTests
         [TestInitialize]
         public void Initialize()
         {
-            var logoutput = @"E:\Log.txt";
+            var logoutput = @"D:\Log.txt";
             if (File.Exists(logoutput))
                 File.Delete(logoutput);
         }
@@ -21,7 +21,7 @@ namespace CodeCraft.Logger.NetFramework.UnitTests
         {
             try
             {
-                var logoutput = @"E:\Log.txt";
+                var logoutput = @"D:\Log.txt";
                 Assert.IsTrue(File.Exists(logoutput));
                 Assert.AreEqual(81, File.ReadAllLines(logoutput).Length);
             }
@@ -38,7 +38,7 @@ namespace CodeCraft.Logger.NetFramework.UnitTests
         public void FileLoggerTest()
         {
             /*using (*/
-            using(var fileLogger = new Logger.FileLogger(@"E:\Log.txt") )
+            using(var fileLogger = new Logger.FileLogger(@"D:\Log.txt") )
             {
                 fileLogger.Error("Tests");
                 for (int i = 0; i < 80; i++)
@@ -53,7 +53,7 @@ namespace CodeCraft.Logger.NetFramework.UnitTests
         public void FileLoggerTestWitoutUsing()
         {
             /*using (*/
-            var fileLogger = new Logger.FileLogger(@"E:\Log.txt");
+            var fileLogger = new Logger.FileLogger(@"D:\Log.txt");
             {
                 fileLogger.Error("Tests");
                 for (int i = 0; i < 80; i++)

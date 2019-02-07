@@ -8,6 +8,5 @@
         void Warn(string log);
         void Error(string log);
         void Critical(string log);
-    }
-
+    } 
 }

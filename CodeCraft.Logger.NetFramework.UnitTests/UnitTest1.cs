@@ -69,6 +69,7 @@ namespace CodeCraft.Logger.NetFramework.UnitTests
             t1.Join();
             t3.Join();
             t2.Join();
+           
 
             ConsoleLogger.Dispose();
         }
@@ -88,7 +89,38 @@ namespace CodeCraft.Logger.NetFramework.UnitTests
             t1.Join();
             t3.Join();
             t2.Join();
-            Thread.Sleep(2000);
+            Debug.WriteLine("BeforeSleep");
+            int i = 0;
+            while (i < int.MaxValue) { i++; }
+             i = 0;
+            while (i < int.MaxValue) { i++; }
+             i = 0;
+            while (i < int.MaxValue) { i++; }
+             i = 0;
+            while (i < int.MaxValue) { i++; }
+             i = 0;
+            while (i < int.MaxValue) { i++; }
+             i = 0;
+            while (i < int.MaxValue) { i++; }
+             i = 0;
+
+
+            Debug.WriteLine("EndSleep");
+            var t11 = new Thread(new ThreadStart(TraceLogs));
+            var t21 = new Thread(new ThreadStart(InfoLogs));
+            var t31 = new Thread(new ThreadStart(DebugLogs));
+
+            t11.Start();
+            t21.Start();
+            t31.Start();
+
+
+            t11.Join();
+            t31.Join();
+            t21.Join();
+            Debug.WriteLine("BeforeSleep");
+            Thread.Sleep(10000);
+            Debug.WriteLine("EndSleep");
         }
 
 

@@ -70,7 +70,7 @@ namespace CodeCraft.Logger.ProducerConsumer
         {
             try
             {
-                while (!DataQueue.IsCompleted)
+               // while (!DataQueue.IsCompleted)
                 {
                     // Blocks if number.Count == 0
                     // IOE means that Take() was called on a completed collection.
@@ -78,7 +78,9 @@ namespace CodeCraft.Logger.ProducerConsumer
                     // IsCompleted check but before we call Take. 
                     // In this example, we can simply catch the exception since the 
                     // loop will break on the next iteration. 
+                    Debug.WriteLine("Before" + $"{DataQueue.Count}");
                     ConsumeData();
+                    Debug.WriteLine("After");
                     //if (tokenSource.IsCancellationRequested)
                     {
                         // Debug.WriteLine("Cancel");
@@ -91,17 +93,20 @@ namespace CodeCraft.Logger.ProducerConsumer
             }
             catch (ProducerConsumerException ex)
             {
-                ConsumeEnumarable();
+                ConsumeEnumerable();
             }
 
 
             void ConsumeData()
             {
-                foreach (var l in DataQueue.GetConsumingEnumerable()) Process(l);
+                Debug.WriteLine("ConsumeData"+ $"{DataQueue.Count}");
+                 foreach (var l in DataQueue.GetConsumingEnumerable()) Process(l);
+            
+                Debug.WriteLine("EndConsumeData");
             }
 
 
-            void ConsumeEnumarable()
+            void ConsumeEnumerable()
             {
                 while (DataQueue.TryTake(out var data))
                 {

@@ -53,7 +53,7 @@ namespace CodeCraft.Logger.ProducerConsumer
         public void Produce(T data)
         {
             DataQueue.Add(data);
-            // Debug.WriteLine("Added :" + data.ToString());
+       
         }
         /// <summary>
         /// <see langword="abstract"/> method that contains process to apply on data.
@@ -78,9 +78,9 @@ namespace CodeCraft.Logger.ProducerConsumer
                     // IsCompleted check but before we call Take. 
                     // In this example, we can simply catch the exception since the 
                     // loop will break on the next iteration. 
-                    Debug.WriteLine("Before" + $"{DataQueue.Count}");
+                  
                     ConsumeData();
-                    Debug.WriteLine("After");
+                   
                     //if (tokenSource.IsCancellationRequested)
                     {
                         // Debug.WriteLine("Cancel");
@@ -99,10 +99,8 @@ namespace CodeCraft.Logger.ProducerConsumer
 
             void ConsumeData()
             {
-                Debug.WriteLine("ConsumeData"+ $"{DataQueue.Count}");
                  foreach (var l in DataQueue.GetConsumingEnumerable()) Process(l);
-            
-                Debug.WriteLine("EndConsumeData");
+
             }
 
 

@@ -67,7 +67,7 @@ namespace CodeCraft.Logger.ProducerConsumer
         /// Consumer processing.
         /// </summary>
         private void Consume()
-        {
+        { 
             try
             {
                // while (!DataQueue.IsCompleted)

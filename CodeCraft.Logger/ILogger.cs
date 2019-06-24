@@ -2,6 +2,8 @@
 {
     public interface ILogger
     {
+        ElogLevel MaxLogLevel { get; set; }
+
         void Trace(string log);
         void Info(string log);
         void Debug(string log);

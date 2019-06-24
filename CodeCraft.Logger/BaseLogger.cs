@@ -7,6 +7,7 @@ namespace CodeCraft.Logger
     public abstract class BaseLogger<T> : ILogger
          where T : ILogProducerConsumer, new()
     {
+        public ElogLevel MaxLogLevel { get; set; }
         protected readonly T logProducerConsumer = new T();
 
         #region Lazy Objects
@@ -30,7 +31,10 @@ namespace CodeCraft.Logger
             => LevelLogFormatterFactory.Instance.Instanciate(logLevel);
 
         protected void Produce(string log, ILevelLogFormatter levelLogger)
-            => logProducerConsumer.Produce(levelLogger.FormatLog(log));
+        {
+            if (levelLogger.LogLevel <= MaxLogLevel)
+                logProducerConsumer.Produce(levelLogger.FormatLog(log));
+        }
 
         public void Trace(string log) => Produce(log, TraceLogFormatter);
         public void Info(string log) => Produce(log, InfoLogFormatter);

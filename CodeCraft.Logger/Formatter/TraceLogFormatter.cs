@@ -2,6 +2,6 @@
 {
     sealed class TraceLogFormatter : LevelLogFormatter
     {
-        protected override ElogLevel LogLevel => ElogLevel.Trace;
+        public override ElogLevel LogLevel => ElogLevel.Trace;
     }
 }

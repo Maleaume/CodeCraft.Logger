@@ -4,10 +4,9 @@ using CodeCraft.Logger.ProducerConsumer;
 
 namespace CodeCraft.Logger
 {
-    public abstract class BaseLogger<T> : ILogger, IDisposable
+    public abstract class BaseLogger<T> : ILogger
          where T : ILogProducerConsumer, new()
     {
-        private bool disposed = false;
         protected readonly T logProducerConsumer = new T();
 
         #region Lazy Objects
@@ -39,23 +38,5 @@ namespace CodeCraft.Logger
         public void Warn(string log) => Produce(log, WarningLogFormatter);
         public void Error(string log) => Produce(log, ErrorLogFormatter);
         public void Critical(string log) => Produce(log, CriticalLogFormatter);
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (disposed) return;
-            // Dispose of resources held by this instance.
-            if (disposing)
-                logProducerConsumer.Dispose();
-            disposed = true;
-        }
-        // Dispose of resources held by this instance.
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        // Disposable types implement a finalizer.
-        ~BaseLogger() => Dispose(false);
     }
 }

@@ -2,6 +2,6 @@
 {
     sealed class CriticalLogFormatter : LevelLogFormatter
     {
-        protected override ElogLevel LogLevel => ElogLevel.Critical;
+        public override ElogLevel LogLevel => ElogLevel.Critical;
     }
 }

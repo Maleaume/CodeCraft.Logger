@@ -2,6 +2,7 @@
 {
     public interface ILevelLogFormatter
     {
-        string FormatLog(string log);
+        string FormatLog(string log); 
+        ElogLevel LogLevel { get; }
     }
 }

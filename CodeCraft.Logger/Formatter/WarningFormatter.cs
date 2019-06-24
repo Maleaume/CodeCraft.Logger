@@ -2,6 +2,6 @@
 {
     sealed class WarningFormatter : LevelLogFormatter
     {
-        protected override ElogLevel LogLevel => ElogLevel.Warning;
+        public override ElogLevel LogLevel => ElogLevel.Warning;
     }
 }

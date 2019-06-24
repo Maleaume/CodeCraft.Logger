@@ -2,6 +2,6 @@
 {
     sealed class DebugLogFormatter : LevelLogFormatter
     {
-        protected override ElogLevel LogLevel => ElogLevel.Debug;
+        public override ElogLevel LogLevel => ElogLevel.Debug;
     }
 }

@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Threading;
-using System.Threading.Tasks;
-using CodeCraft.Logger.ProducerConsumer;
+﻿using CodeCraft.Logger.ProducerConsumer;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
+using System.Collections.Generic;
 
 namespace CodeCraft.Logger.NetFramework.UnitTests
 {
@@ -16,32 +13,33 @@ namespace CodeCraft.Logger.NetFramework.UnitTests
 
     internal class MyProducerConsumer : ProducerConsumer<MyModel>
     {
-        public MyProducerConsumer() : base("MyThread") { StartConsumerTask(); }
-        protected override void Process(MyModel data)
+
+        public MyProducerConsumer() : base(1) { }
+        protected override void Consume(MyModel data)
         {
             System.IO.File.WriteAllText(data.FileName, data.Text);
         }
     }
     [TestClass]
-    public class ProducerConsumerTest 
+    public class ProducerConsumerTest
     {
         [TestMethod]
         public void SimpleTest()
-        { 
+        {
             var allData = new List<MyModel>();
             for (int i = 0; i < 100; i++)
                 allData.Add(new MyModel
                 {
                     FileName = $".//{i}.txt",
-                    Text = DateTime.Now.Ticks.ToString ()
+                    Text = DateTime.Now.Ticks.ToString()
                 });
 
-            using (var producer = new MyProducerConsumer())
-                allData.ForEach(m => producer.Produce(m));
+            var producer = new MyProducerConsumer();
+            allData.ForEach(m => producer.Produce(m));
 
-        
+
         }
-    
+
     }
 
 }

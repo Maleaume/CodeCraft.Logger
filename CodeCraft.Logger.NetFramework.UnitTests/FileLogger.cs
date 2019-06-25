@@ -1,8 +1,7 @@
-﻿using System;
-
+﻿
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.IO;
 using System.Threading;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace CodeCraft.Logger.NetFramework.UnitTests
 {
@@ -16,7 +15,7 @@ namespace CodeCraft.Logger.NetFramework.UnitTests
             if (File.Exists(logoutput))
                 File.Delete(logoutput);
         }
-        
+
         public void Cleanup()
         {
             try
@@ -28,7 +27,7 @@ namespace CodeCraft.Logger.NetFramework.UnitTests
             catch (IOException ex)
             {
                 Thread.Sleep(5500);
-           
+
             }
 
 
@@ -38,15 +37,14 @@ namespace CodeCraft.Logger.NetFramework.UnitTests
         public void FileLoggerTest()
         {
             /*using (*/
-            using(var fileLogger = new Logger.FileLogger(@"D:\Log.txt") )
+            var fileLogger = new Logger.FileLogger(@"D:\Log.txt");
+
+            fileLogger.Error("Tests");
+            for (int i = 0; i < 80; i++)
             {
-                fileLogger.Error("Tests");
-                for (int i = 0; i < 80; i++)
-                {
-                    fileLogger.Warn($"{i}");
-                }
+                fileLogger.Warn($"{i}");
             }
-             
+
         }
 
         [TestMethod]

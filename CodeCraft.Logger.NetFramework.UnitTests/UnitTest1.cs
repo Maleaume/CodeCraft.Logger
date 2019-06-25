@@ -1,7 +1,5 @@
 ﻿using System.Diagnostics;
 using System.Threading;
-using System.Threading.Tasks;
-using CodeCraft.Logger.ProducerConsumer;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace CodeCraft.Logger.NetFramework.UnitTests
@@ -29,19 +27,18 @@ namespace CodeCraft.Logger.NetFramework.UnitTests
                 var t1 = new Thread(new ParameterizedThreadStart(TraceEvery300msLogs));
                 t1.Start(ConsoleLogger);
                 t1.Join();
-            }
-            ConsoleLogger.Dispose();
+            } ;
 
         }
         [TestMethod]
         public void ConsoleLoggerWithUsing()
         {
-            using (var logger = new ConsoleLogger())
-            {
+            var logger = new ConsoleLogger();
+             
                 var t1 = new Thread(new ParameterizedThreadStart(TraceEvery300msLogs));
                 t1.Start(ConsoleLogger);
                 t1.Join();
-            }
+             
 
         }
 
@@ -69,9 +66,7 @@ namespace CodeCraft.Logger.NetFramework.UnitTests
             t1.Join();
             t3.Join();
             t2.Join();
-           
-
-            ConsoleLogger.Dispose();
+            
         }
 
         [TestMethod]

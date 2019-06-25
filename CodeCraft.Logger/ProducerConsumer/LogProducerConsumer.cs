@@ -3,12 +3,12 @@
     public abstract class LogProducerConsumer : ProducerConsumer<string>, ILogProducerConsumer
     {
         protected LogProducerConsumer()
-            :base("LoggerThread")
+            :base(1)
         {
         }
          
         protected abstract void WriteLog(string log);
 
-        protected override void Process(string log) => WriteLog(log); 
+        protected override void Consume(string log) => WriteLog(log); 
     }
 }

@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Diagnostics;
 using System.IO;
 
 namespace CodeCraft.Logger.ProducerConsumer
 {
     public sealed class ConsoleLogProducerConsumer : LogProducerConsumer
     {
-        public ConsoleLogProducerConsumer() => StartConsumerTask();
 
         protected override void WriteLog(string log) { Console.WriteLine(log); }
     }
@@ -91,25 +89,11 @@ namespace CodeCraft.Logger.ProducerConsumer
 
         }
         void FilePathSettingsEnd()
-        {
-            StartConsumerTask();
+        { 
             InitializeMode = false;
         }
         
-        protected override void Dispose(bool disposing)
-        {
-            InitializeAsyncResult.AsyncWaitHandle.WaitOne();
-            while (InitializeMode) ;
-
-            if (disposed) return;
-            base.Dispose(disposing);
-            if (disposing)
-            {
-                StreamWriter?.Dispose();
-            }
-            disposed = true;
-
-        }
+     
 
         protected override void WriteLog(string log)
         {

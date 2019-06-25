@@ -18,7 +18,7 @@ namespace CodeCraft.Logger.Formatter
                 case ElogLevel.Warning: return new WarningFormatter();
                 case ElogLevel.Error: return new ErrorLogFormatter();
                 case ElogLevel.Critical: return new CriticalLogFormatter();
-                default: throw new ArgumentException("ElogLEvel value is not valid", "logLevel");
+                default: throw new ArgumentException("ElogLevel value is not valid", "logLevel");
             }
         }
     }

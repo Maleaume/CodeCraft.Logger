@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
 
@@ -43,7 +44,10 @@ namespace CodeCraft.Logger.ProducerConsumer
         /// This method adds an element to the processing queue 
         /// </summary>
         /// <param name="item">item to add.</param>
-        public void Produce(T item) => queue.Post(item);
+        public void Produce(T item)
+        { 
+            queue.Post(item);
+        }
 
         /// <summary>
         /// Start consumer task
@@ -59,14 +63,18 @@ namespace CodeCraft.Logger.ProducerConsumer
         /// Stop consumer task
         /// </summary>
         /// <returns>awaitable task</returns>
-        public virtual async Task Stop()
+        public virtual  void Stop()
         {
             queue.Complete();
+             
             IsStopped = true;
-            await Task.Factory.StartNew(() => queue.Completion);
         }
         public bool IsStopped { get; private set; }
         public bool StopConditionsReached() => false;
-    }
 
+        ~ProducerConsumer()
+        {
+            Stop();
+        }
+    }
 }

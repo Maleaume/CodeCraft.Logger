@@ -7,9 +7,9 @@ namespace CodeCraft.Logger
     public abstract class BaseLogger<T> : ILogger
          where T : ILogProducerConsumer, new()
     {
-        public ElogLevel MaxLogLevel { get; set; }
+        public ElogLevel MaxLogLevel { get; set; } = ElogLevel.Critical;
         protected readonly T logProducerConsumer = new T();
-
+        
         #region Lazy Objects
         private readonly Lazy<ILevelLogFormatter> traceLogFormatter = new Lazy<ILevelLogFormatter>(() => InstanciateLevelLoger(ElogLevel.Trace), true);
         private readonly Lazy<ILevelLogFormatter> infoLogFormatter = new Lazy<ILevelLogFormatter>(() => InstanciateLevelLoger(ElogLevel.Info), true);

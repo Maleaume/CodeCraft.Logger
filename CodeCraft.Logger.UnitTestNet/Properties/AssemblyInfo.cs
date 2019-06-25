@@ -1,18 +1,19 @@
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
-[assembly: AssemblyTitle("CodeCraft.Logger.NetFramework.UnitTests")]
+[assembly: AssemblyTitle("CodeCraft.Logger.UnitTestNet")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Hewlett-Packard")]
-[assembly: AssemblyProduct("CodeCraft.Logger.NetFramework.UnitTests")]
-[assembly: AssemblyCopyright("Copyright © Hewlett-Packard 2018")]
+[assembly: AssemblyCompany("")]
+[assembly: AssemblyProduct("CodeCraft.Logger.UnitTestNet")]
+[assembly: AssemblyCopyright("Copyright ©  2019")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
 [assembly: ComVisible(false)]
 
-[assembly: Guid("f828fd94-6ca7-4d7b-acaa-a42e32730075")]
+[assembly: Guid("d156b7ef-9bfc-4b41-9e8e-8be64c7441b9")]
 
 // [assembly: AssemblyVersion("1.0.*")]
 [assembly: AssemblyVersion("1.0.0.0")]

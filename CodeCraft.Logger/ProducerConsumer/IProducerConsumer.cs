@@ -15,7 +15,7 @@ namespace CodeCraft.Logger.ProducerConsumer
     public interface IBaseProducerConsumer
     {
         Task Start();
-        Task Stop();
+        void Stop();
         bool IsStopped { get; }
         int InputCount { get; }
         event EventHandler<EventArgs> ConsumeEnded;

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Text;
 
 namespace CodeCraft.Logger.ProducerConsumer
 {
@@ -25,7 +26,7 @@ namespace CodeCraft.Logger.ProducerConsumer
     {
         public static StreamWriter CreateOrOpenFile(string filePath)
         {
-            return new StreamWriter(filePath, true);
+            return new StreamWriter(filePath, true) { AutoFlush = true };
         }
 
         public static async void WriteTextAsync(string filePath, string text)
@@ -55,6 +56,7 @@ namespace CodeCraft.Logger.ProducerConsumer
         private event FilePathCompletedEventHandler FilePathEvent;
         private string fileLogPath;
         private bool InitializeMode = false;
+        readonly StringBuilder strBuilder = new StringBuilder();
         public string FileLogPath
         {
             get { return fileLogPath; }
@@ -69,16 +71,16 @@ namespace CodeCraft.Logger.ProducerConsumer
         {
             FilePathEvent += FileLogProducerConsumer_FilePathEvent;
         }
-
+        private void DisposeCurrentStream()
+        {
+            StreamWriter?.Close();
+            StreamWriter?.Dispose();
+        }
         private void FileLogProducerConsumer_FilePathEvent(object sender, FilePathEventArgs e)
         {
-            try
-            {
-                StreamWriter = FileManager.CreateOrOpenFile(fileLogPath);
-            }
-            catch (Exception ex)
-            {
-            }
+            DisposeCurrentStream();
+            StreamWriter =  new StreamWriter(FileLogPath, true) { AutoFlush = true };
+
         }
 
         private void SendFilePathEvent()
@@ -89,21 +91,19 @@ namespace CodeCraft.Logger.ProducerConsumer
 
         }
         void FilePathSettingsEnd()
-        { 
+        {
             InitializeMode = false;
         }
-        
-     
+
+        ~FileLogProducerConsumer()
+        {
+            DisposeCurrentStream();
+        }
 
         protected override void WriteLog(string log)
         {
-            try
-            {
-                FileManager.WriteText(StreamWriter, $"{log} \r\n");
-
-            }
-            catch (Exception ex)
-            { }
+            
+            StreamWriter.WriteLine(log);
         }
     }
 }

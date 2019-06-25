@@ -3,7 +3,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
 
-namespace CodeCraft.Logger.NetFramework.UnitTests
+namespace CodeCraft.Logger.UnitTestNet
 {
     class MyModel
     {

@@ -2,14 +2,14 @@
 using System.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace CodeCraft.Logger.NetFramework.UnitTests
+namespace CodeCraft.Logger.UnitTestNet
 {
     [TestClass]
     public class UnitTest1
     {
         ConsoleLogger ConsoleLogger = new ConsoleLogger();
         [TestMethod]
-        public void ConsoleLoggerWithoutDispose()
+        public void ConsoleLoggerUsingAttributes()
         {
             var t1 = new Thread(new ParameterizedThreadStart(TraceEvery300msLogs));
             t1.Start(ConsoleLogger);
@@ -20,7 +20,7 @@ namespace CodeCraft.Logger.NetFramework.UnitTests
         }
 
         [TestMethod]
-        public void ConsoleLoggerWithDispose()
+        public void ConsoleLoggerInFunction()
         {
             var logger = new ConsoleLogger();
             {
@@ -30,17 +30,7 @@ namespace CodeCraft.Logger.NetFramework.UnitTests
             } ;
 
         }
-        [TestMethod]
-        public void ConsoleLoggerWithUsing()
-        {
-            var logger = new ConsoleLogger();
-             
-                var t1 = new Thread(new ParameterizedThreadStart(TraceEvery300msLogs));
-                t1.Start(ConsoleLogger);
-                t1.Join();
-             
-
-        }
+ 
 
         private void TraceEvery300msLogs(object logger) => TraceEvery300msLogs(((ILogger)logger).Trace);
         private void TraceEvery300msLogs(ILogger logger) => TraceEvery300msLogs(logger.Trace);
@@ -60,11 +50,11 @@ namespace CodeCraft.Logger.NetFramework.UnitTests
             var t2 = new Thread(new ThreadStart(InfoLogs));
             var t3 = new Thread(new ThreadStart(DebugLogs));
 
-            t1.Start();
             t2.Start();
+            t1.Start();
             t3.Start();
-            t1.Join();
             t3.Join();
+            t1.Join();
             t2.Join();
             
         }
@@ -129,19 +119,22 @@ namespace CodeCraft.Logger.NetFramework.UnitTests
         {
             Thread.Sleep(1000);
             for (int i = 0; i < 200; i++)
+            {
+                Thread.Sleep(50);
                 Log(i.ToString());
+            }
             //
             for (int i = 1000; i < 1200; i++)
                 Log(i.ToString());
-            Debug.WriteLine("1#################################");
+            Log("1#################################");
         }
         private void Logs2(LogLevel Log)
         {
             for (int i = 0; i < 200; i++)
             {
-                Log(i.ToString());//Thread.Sleep(5);
+                Log(i.ToString()); Thread.Sleep(5);
             }
-            Debug.WriteLine("2#################################");
+            Log("2#################################");
         }
 
         private void Logs3(LogLevel Log)
@@ -149,9 +142,9 @@ namespace CodeCraft.Logger.NetFramework.UnitTests
             for (int i = 0; i < 200; i++)
             {
                 Log(i.ToString());
-                //Thread.Sleep(2);
+                Thread.Sleep(2);
             }
-            Debug.WriteLine("3#################################");
+            Log("3#################################");
         }
     }
 }

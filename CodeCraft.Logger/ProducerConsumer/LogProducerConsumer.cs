@@ -1,4 +1,6 @@
-﻿namespace CodeCraft.Logger.ProducerConsumer
+﻿using System.Diagnostics;
+
+namespace CodeCraft.Logger.ProducerConsumer
 {
     public abstract class LogProducerConsumer : ProducerConsumer<string>, ILogProducerConsumer
     {
@@ -9,6 +11,10 @@
          
         protected abstract void WriteLog(string log);
 
-        protected override void Consume(string log) => WriteLog(log); 
+        protected override void Consume(string log)
+        {
+            Debug.WriteLine("LogProducerConsumer");
+            WriteLog(log);
+        }
     }
 }
